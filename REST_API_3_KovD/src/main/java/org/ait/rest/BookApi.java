@@ -21,21 +21,35 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 @Path("/books")
 public class BookApi {
 
-    private static final String CONNECTION_STRING = "mongodb+srv://kovacsd435:kovacsd435Books@bookdb2026.mbjbb7u.mongodb.net/?appName=BookDB2026";
-    private static final MongoCollection<Book> collection;
+    private MongoCollection<Book> collection;
 
-    static {
-        CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
-                fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+    public BookApi() {
+        String connectionString = System.getenv("MONGO_URI");
 
-        MongoClientSettings settings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(CONNECTION_STRING))
-                .codecRegistry(pojoCodecRegistry)
-                .build();
+        if (connectionString == null || connectionString.trim().isEmpty()) {
+            System.err.println("!!! HIBA: A MONGO_URI KÖRNYEZETI VÁLTOZÓ ÜRES VAGY NULL !!!");
+            throw new RuntimeException("Adatbázis csatlakozási hiba (Hiányzó URI)!");
+        }
 
-        MongoClient mongoClient = MongoClients.create(settings);
-        MongoDatabase database = mongoClient.getDatabase("library");
-        collection = database.getCollection("books", Book.class);
+        try {
+            CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+                    fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+
+            MongoClientSettings settings = MongoClientSettings.builder()
+                    .applyConnectionString(new ConnectionString(connectionString))
+                    .codecRegistry(pojoCodecRegistry)
+                    .build();
+
+            MongoClient mongoClient = MongoClients.create(settings);
+            MongoDatabase database = mongoClient.getDatabase("library");
+            collection = database.getCollection("books", Book.class);
+
+            System.out.println(">>> SIKERES CSATLAKOZÁS A MONGODB-HEZ! <<<");
+        } catch (Exception e) {
+            System.err.println("!!! KATASTRÓFA AZ ADATBÁZIS CSATLAKOZÁSKOR: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Adatbázis hiba", e);
+        }
     }
 
     @GET

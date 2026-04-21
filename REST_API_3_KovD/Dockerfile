@@ -1,7 +1,7 @@
-FROM tomcat:9-jre17-temurin
-
+FROM tomcat:9.0-jdk17
+# Kitöröljük az alapértelmezett Tomcat cuccokat
 RUN rm -rf /usr/local/tomcat/webapps/*
-
-COPY target/REST_API_3_KovD-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+# Átmásoljuk a .war fájlt a Dockerfile MELLŐL
+COPY *.war /usr/local/tomcat/webapps/ROOT.war
 EXPOSE 8080
 CMD ["catalina.sh", "run"]
