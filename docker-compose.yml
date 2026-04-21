@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  # Ez lesz az 'A' komponens
+  frontend:
+    build: ./Minimal_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  # Ez lesz a 'B' komponens
+  backend:
+    build: ./REST_API_3_KovD
+    ports:
+      - "8080:8080"
+    environment:
+      # IDE MÁSOLD BE A MONGODB ATLAS CONNECTION STRINGEDET!
+      - MONGO_URI=mongodb+srv://<felhasznalo>:<jelszo>@cluster0.xyxy.mongodb.net/?retryWrites=true&w=majority

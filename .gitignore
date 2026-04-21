@@ -1,0 +1,17 @@
+# Java / Maven szemét
+target/
+*.class
+*.war
+*.jar
+
+# IntelliJ szemét
+.idea/
+*.iml
+out/
+
+# Docker szemét
+.docker/
+
+# Operációs rendszer szemét
+.DS_Store
+Thumbs.db
