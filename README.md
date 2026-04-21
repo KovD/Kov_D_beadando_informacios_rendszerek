@@ -1,0 +1,1 @@
+# Kov_D_beadando_informacios_rendszerek
