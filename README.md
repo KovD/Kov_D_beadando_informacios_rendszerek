@@ -27,14 +27,17 @@ Mivel Docker képességeimet meghaladta két teljesen külön álló komponens �
 
 A futtatáshoz Docker Desktop szükséges.
 
+1. **.env**
+    Mielőtt még bármit csinálnánk, létre kell hozni egy .env file-t a gyökérben (ahol a docker-composer is van) majd a .env.example file tartalmát belemásolni, és végül a PASSWORD értéket átírni a titkosos jelszóra. Ezt mind adatbázis védelem miatt.
 
-1.  **Indítás:**
+
+2.  **Indítás:**
     A projekt gyökérmappájában (ahol a `docker-compose.yml` található) futtassa a következő parancsot (.war file-t is odaadtam):
     ```bash
     docker-compose up --build -d
     ```
 
-2.  **Használat:**
+3.  **Használat:**
     * A webes felület a **http://localhost** (80-as port) címen érhető el.
     * A REST API közvetlenül is tesztelhető a **http://localhost:8080/rest/books** címen (itt visszakerülnek a mongo Db ATLASBól a könyvek).
 
